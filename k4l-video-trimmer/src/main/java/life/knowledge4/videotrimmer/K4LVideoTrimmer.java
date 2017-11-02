@@ -42,7 +42,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.io.File;
@@ -61,8 +60,6 @@ import life.knowledge4.videotrimmer.view.ProgressBarView;
 import life.knowledge4.videotrimmer.view.RangeSeekBarView;
 import life.knowledge4.videotrimmer.view.Thumb;
 import life.knowledge4.videotrimmer.view.TimeLineView;
-
-import static life.knowledge4.videotrimmer.utils.TrimVideoUtils.stringForTime;
 
 public class K4LVideoTrimmer extends FrameLayout {
 
@@ -333,10 +330,8 @@ public class K4LVideoTrimmer extends FrameLayout {
         if (fromUser) {
             if (duration < mStartPosition) {
                 setProgressBarPosition(mStartPosition);
-                duration = mStartPosition;
             } else if (duration > mEndPosition) {
                 setProgressBarPosition(mEndPosition);
-                duration = mEndPosition;
             }
         }
     }
