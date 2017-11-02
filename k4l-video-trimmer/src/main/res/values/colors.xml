@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <!-- VIDEO TRIMMER -->
+    <color name="black_30">#4c000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="background_video_color">#2f3031</color>
     <color name="background_progress_color">#6C6D6D</color>
     <color name="progress_color">@color/colorPrimary</color>

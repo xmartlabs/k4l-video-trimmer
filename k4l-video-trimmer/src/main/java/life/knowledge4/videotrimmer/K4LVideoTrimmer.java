@@ -73,12 +73,8 @@ public class K4LVideoTrimmer extends FrameLayout {
     private SeekBar mHolderTopView;
     private RangeSeekBarView mRangeSeekBarView;
     private RelativeLayout mLinearVideo;
-    private View mTimeInfoContainer;
     private VideoView mVideoView;
     private ImageView mPlayView;
-    private TextView mTextSize;
-    private TextView mTextTimeFrame;
-    private TextView mTextTime;
     private TimeLineView mTimeLineView;
 
     private ProgressBarView mVideoProgressIndicator;
@@ -118,10 +114,6 @@ public class K4LVideoTrimmer extends FrameLayout {
         mLinearVideo = ((RelativeLayout) findViewById(R.id.layout_surface_view));
         mVideoView = ((VideoView) findViewById(R.id.video_loader));
         mPlayView = ((ImageView) findViewById(R.id.icon_video_play));
-        mTimeInfoContainer = findViewById(R.id.timeText);
-        mTextSize = ((TextView) findViewById(R.id.textSize));
-        mTextTimeFrame = ((TextView) findViewById(R.id.textTimeSelection));
-        mTextTime = ((TextView) findViewById(R.id.textTime));
         mTimeLineView = ((TimeLineView) findViewById(R.id.timeLineView));
 
         setUpListeners();
@@ -138,7 +130,7 @@ public class K4LVideoTrimmer extends FrameLayout {
         });
         mListeners.add(mVideoProgressIndicator);
 
-        findViewById(R.id.btCancel)
+        findViewById(R.id.retryButton)
                 .setOnClickListener(
                         new OnClickListener() {
                             @Override
@@ -148,7 +140,7 @@ public class K4LVideoTrimmer extends FrameLayout {
                         }
                 );
 
-        findViewById(R.id.btSave)
+        findViewById(R.id.useVideoButton)
                 .setOnClickListener(
                         new OnClickListener() {
                             @Override
@@ -346,7 +338,6 @@ public class K4LVideoTrimmer extends FrameLayout {
                 setProgressBarPosition(mEndPosition);
                 duration = mEndPosition;
             }
-            setTimeVideo(duration);
         }
     }
 
@@ -364,7 +355,6 @@ public class K4LVideoTrimmer extends FrameLayout {
 
         int duration = (int) ((mDuration * seekBar.getProgress()) / 1000L);
         mVideoView.seekTo(duration);
-        setTimeVideo(duration);
         notifyProgressUpdate(false);
     }
 
@@ -393,8 +383,6 @@ public class K4LVideoTrimmer extends FrameLayout {
         mDuration = mVideoView.getDuration();
         setSeekBarPosition();
 
-        setTimeFrames();
-        setTimeVideo(0);
 
         if (mOnK4LVideoListener != null) {
             mOnK4LVideoListener.onVideoPrepared();
@@ -422,16 +410,6 @@ public class K4LVideoTrimmer extends FrameLayout {
         mRangeSeekBarView.initMaxWidth();
     }
 
-    private void setTimeFrames() {
-        String seconds = getContext().getString(R.string.short_seconds);
-        mTextTimeFrame.setText(String.format("%s %s - %s %s", stringForTime(mStartPosition), seconds, stringForTime(mEndPosition), seconds));
-    }
-
-    private void setTimeVideo(int position) {
-        String seconds = getContext().getString(R.string.short_seconds);
-        mTextTime.setText(String.format("%s %s", stringForTime(position), seconds));
-    }
-
     private void onSeekThumbs(int index, float value) {
         switch (index) {
             case Thumb.LEFT: {
@@ -446,7 +424,6 @@ public class K4LVideoTrimmer extends FrameLayout {
         }
         setProgressBarPosition(mStartPosition);
 
-        setTimeFrames();
         mTimeVideo = mEndPosition - mStartPosition;
     }
 
@@ -490,7 +467,6 @@ public class K4LVideoTrimmer extends FrameLayout {
             // use long to avoid overflow
             setProgressBarPosition(time);
         }
-        setTimeVideo(time);
     }
 
     private void setProgressBarPosition(int position) {
@@ -498,16 +474,6 @@ public class K4LVideoTrimmer extends FrameLayout {
             long pos = 1000L * position / mDuration;
             mHolderTopView.setProgress((int) pos);
         }
-    }
-
-    /**
-     * Set video information visibility.
-     * For now this is for debugging
-     *
-     * @param visible whether or not the videoInformation will be visible
-     */
-    public void setVideoInformationVisibility(boolean visible) {
-        mTimeInfoContainer.setVisibility(visible ? VISIBLE : GONE);
     }
 
     /**
@@ -575,13 +541,6 @@ public class K4LVideoTrimmer extends FrameLayout {
 
             mOriginSizeFile = file.length();
             long fileSizeInKB = mOriginSizeFile / 1024;
-
-            if (fileSizeInKB > 1000) {
-                long fileSizeInMB = fileSizeInKB / 1024;
-                mTextSize.setText(String.format("%s %s", fileSizeInMB, getContext().getString(R.string.megabyte)));
-            } else {
-                mTextSize.setText(String.format("%s %s", fileSizeInKB, getContext().getString(R.string.kilobyte)));
-            }
         }
 
         mVideoView.setVideoURI(mSrc);

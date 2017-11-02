@@ -1,15 +1,16 @@
 apply plugin: 'com.android.library'
 apply from: '../mavenpush.gradle'
+apply from: '../versions.gradle'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
+        versionCode versions.publishVersionCode
+        versionName versions.publishVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -22,10 +23,10 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.googlecode.mp4parser:isoparser:1.1.20'
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
-    androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile 'com.android.support:support-annotations:24.0.0'
+    compile "com.android.support:appcompat-v7:${versions.supportLib}"
+    compile "com.googlecode.mp4parser:isoparser:${versions.isoparser}"
+    testCompile "junit:junit:${versions.junit}"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${versions.espresso}"
+    androidTestCompile "com.android.support.test:runner:${versions.testRunner}"
+    androidTestCompile "com.android.support:support-annotations:${versions.supportLib}"
 }
