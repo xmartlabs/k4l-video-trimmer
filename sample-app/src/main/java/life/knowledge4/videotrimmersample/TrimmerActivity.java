@@ -33,7 +33,7 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
         mProgressDialog.setCancelable(false);
         mProgressDialog.setMessage(getString(R.string.trimming_progress));
 
-        mVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
+        mVideoTrimmer = findViewById(R.id.timeLine);
         if (mVideoTrimmer != null) {
             mVideoTrimmer.setMaxDuration(10);
             mVideoTrimmer.setOnTrimVideoListener(this);

@@ -108,13 +108,13 @@ public class K4LVideoTrimmer extends FrameLayout {
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.view_time_line, this, true);
 
-        mHolderTopView = ((SeekBar) findViewById(R.id.handlerTop));
-        mVideoProgressIndicator = ((ProgressBarView) findViewById(R.id.timeVideoView));
-        mRangeSeekBarView = ((RangeSeekBarView) findViewById(R.id.timeLineBar));
-        mLinearVideo = ((RelativeLayout) findViewById(R.id.layout_surface_view));
-        mVideoView = ((VideoView) findViewById(R.id.video_loader));
-        mPlayView = ((ImageView) findViewById(R.id.icon_video_play));
-        mTimeLineView = ((TimeLineView) findViewById(R.id.timeLineView));
+        mHolderTopView = findViewById(R.id.handlerTop);
+        mVideoProgressIndicator = findViewById(R.id.timeVideoView);
+        mRangeSeekBarView = findViewById(R.id.timeLineBar);
+        mLinearVideo = findViewById(R.id.layout_surface_view);
+        mVideoView = findViewById(R.id.video_loader);
+        mPlayView = findViewById(R.id.icon_video_play);
+        mTimeLineView = findViewById(R.id.timeLineView);
 
         setUpListeners();
         setUpMargins();
