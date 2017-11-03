@@ -137,6 +137,16 @@ public class TrimVideoUtils {
 
         fc.close();
         fos.close();
+
+        File fdelete = new File(src.getPath());
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                System.out.println("file Deleted: " + src.getPath());
+            } else {
+                System.out.println("file not Deleted: " + src.getPath());
+            }
+        }
+
         if (callback != null)
             callback.getResult(Uri.parse(dst.toString()));
     }
