@@ -19,23 +19,24 @@
             android:layout_gravity="center"
             />
 
-        <ImageView
-            android:id="@+id/icon_video_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/play_button"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            />
-
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/icon_video_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/play_button"
+        android:layout_above="@id/layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        />
 
     <RelativeLayout
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:background="@color/black_30"
+        android:layout_alignParentBottom="true"
         >
 
         <SeekBar
@@ -74,9 +75,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/timeLineBar"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
             android:paddingBottom="5dp"
+            android:paddingEnd="15dp"
+            android:paddingStart="15dp"
             >
 
             <Button

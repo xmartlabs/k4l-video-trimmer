@@ -8,7 +8,6 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 import static org.junit.Assert.*;
 
 /**
@@ -19,11 +18,11 @@ import static org.junit.Assert.*;
 @MediumTest
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentationTest {
-    @Test
-    public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
+  @Test
+  public void useAppContext() throws Exception {
+    // Context of the app under test.
+    Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("life.knowledge4.videotrimmer", appContext.getPackageName());
-    }
+    assertEquals("life.knowledge4.videotrimmer", appContext.getPackageName());
+  }
 }

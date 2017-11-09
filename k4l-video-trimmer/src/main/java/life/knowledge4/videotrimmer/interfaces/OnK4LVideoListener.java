@@ -24,6 +24,5 @@
 package life.knowledge4.videotrimmer.interfaces;
 
 public interface OnK4LVideoListener {
-
-    void onVideoPrepared();
+  void onVideoPrepared();
 }
