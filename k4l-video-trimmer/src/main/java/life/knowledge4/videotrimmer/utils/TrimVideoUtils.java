@@ -122,32 +122,28 @@ public class TrimVideoUtils {
       movie.addTrack(new AppendTrack(new CroppedTrack(track, startSample1, endSample1)));
     }
 
+    FileOutputStream fos = null;
+    FileChannel fc = null;
+
     dst.getParentFile().mkdirs();
 
-    if (!dst.exists()) {
-      dst.createNewFile();
-    }
-
-    Container out = new DefaultMp4Builder().build(movie);
-
-    FileOutputStream fos = new FileOutputStream(dst);
-    FileChannel fc = fos.getChannel();
-    out.writeContainer(fc);
-
-    fc.close();
-    fos.close();
-
-    File fdelete = new File(src.getPath());
-    if (fdelete.exists()) {
-      if (fdelete.delete()) {
-        System.out.println("file Deleted: " + src.getPath());
-      } else {
-        System.out.println("file not Deleted: " + src.getPath());
+    try {
+      if (!dst.exists()) {
+        dst.createNewFile();
       }
-    }
 
-    if (callback != null) {
-      callback.getResult(Uri.parse(dst.toString()));
+      Container out = new DefaultMp4Builder().build(movie);
+
+      fos = new FileOutputStream(dst);
+      fc = fos.getChannel();
+      out.writeContainer(fc);
+
+      if (callback != null) {
+        callback.getResult(Uri.parse(dst.toString()));
+      }
+    } finally {
+      fc.close();
+      fos.close();
     }
   }
 
