@@ -386,7 +386,6 @@ public class K4LVideoTrimmer extends FrameLayout {
   }
 
   private void setSeekBarPosition() {
-
     if (mDuration >= mMaxDuration) {
       mStartPosition = mDuration / 2 - mMaxDuration / 2;
       mEndPosition = mDuration / 2 + mMaxDuration / 2;
