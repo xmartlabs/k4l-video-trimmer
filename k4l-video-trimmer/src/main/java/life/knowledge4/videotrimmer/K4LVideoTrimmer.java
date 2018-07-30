@@ -87,6 +87,7 @@ public class K4LVideoTrimmer extends FrameLayout {
   private int mTimeVideo = 0;
   private int mStartPosition = 0;
   private int mEndPosition = 0;
+  private int mThumbnailPositionInMillis = 0;
 
   private long mOriginSizeFile;
   private boolean mResetSeekBar = true;
@@ -350,8 +351,8 @@ public class K4LVideoTrimmer extends FrameLayout {
     mVideoView.pause();
     mPlayView.setVisibility(View.VISIBLE);
 
-    int duration = (int) ((mDuration * seekBar.getProgress()) / 1000L);
-    mVideoView.seekTo(duration);
+    mThumbnailPositionInMillis = (int) ((mDuration * seekBar.getProgress()) / 1000L);
+    mVideoView.seekTo(mThumbnailPositionInMillis);
     notifyProgressUpdate(false);
   }
 
@@ -471,6 +472,14 @@ public class K4LVideoTrimmer extends FrameLayout {
       long pos = 1000L * position / mDuration;
       mHolderTopView.setProgress((int) pos);
     }
+  }
+
+  /**
+   *
+   * @return Selected thumbnail position in millis
+   */
+  public int getThumbnailPositionInMillis() {
+    return mThumbnailPositionInMillis;
   }
 
   /**
