@@ -31,6 +31,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -87,6 +88,8 @@ public class K4LVideoTrimmer extends FrameLayout {
   private int mTimeVideo = 0;
   private int mStartPosition = 0;
   private int mEndPosition = 0;
+  @Nullable
+  private Integer mThumbnailPositionInMillis;
 
   private long mOriginSizeFile;
   private boolean mResetSeekBar = true;
@@ -350,8 +353,8 @@ public class K4LVideoTrimmer extends FrameLayout {
     mVideoView.pause();
     mPlayView.setVisibility(View.VISIBLE);
 
-    int duration = (int) ((mDuration * seekBar.getProgress()) / 1000L);
-    mVideoView.seekTo(duration);
+    mThumbnailPositionInMillis = (int) ((mDuration * seekBar.getProgress()) / 1000L);
+    mVideoView.seekTo(mThumbnailPositionInMillis);
     notifyProgressUpdate(false);
   }
 
@@ -471,6 +474,15 @@ public class K4LVideoTrimmer extends FrameLayout {
       long pos = 1000L * position / mDuration;
       mHolderTopView.setProgress((int) pos);
     }
+  }
+
+  /**
+   *
+   * @return Selected thumbnail position in millis
+   */
+  @Nullable
+  public Integer getThumbnailPositionInMillis() {
+    return mThumbnailPositionInMillis;
   }
 
   /**
