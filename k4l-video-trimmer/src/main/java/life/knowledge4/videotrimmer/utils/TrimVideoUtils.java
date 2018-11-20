@@ -28,7 +28,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.coremedia.iso.boxes.Container;
-import com.googlecode.mp4parser.FileDataSourceViaHeapImpl;
+import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
@@ -68,7 +68,7 @@ public class TrimVideoUtils {
   private static void genVideoUsingMp4Parser(@NonNull File src, @NonNull File dst, long startMs, long endMs, @NonNull OnTrimVideoListener callback) throws IOException {
     // NOTE: Switched to using FileDataSourceViaHeapImpl since it does not use memory mapping (VM).
     // Otherwise we get OOM with large movie files.
-    Movie movie = MovieCreator.build(new FileDataSourceViaHeapImpl(src.getAbsolutePath()));
+    Movie movie = MovieCreator.build(new FileDataSourceImpl(src.getAbsolutePath()));
 
     List<Track> tracks = movie.getTracks();
     movie.setTracks(new LinkedList<Track>());
