@@ -163,8 +163,9 @@ public class TimeLineView extends View {
     if (mBitmapList != null) {
       Integer last = mBitmapList.get(0).first;
       for (int i = 1; i < mBitmapList.size(); i++) {
-        if (time - mBitmapList.get(i).first < 0) {
-          last = mBitmapList.get(i - 1).first;
+        if (time - mBitmapList.get(i).first > 0) {
+          last = mBitmapList.get(i).first;
+        }else {
           break;
         }
       }
