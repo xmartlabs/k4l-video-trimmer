@@ -29,9 +29,13 @@ import android.graphics.Canvas;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.LongSparseArray;
+import android.util.Pair;
 import android.view.View;
+
+import java.util.stream.Stream;
 
 import life.knowledge4.videotrimmer.R;
 import life.knowledge4.videotrimmer.utils.BackgroundExecutor;
@@ -41,7 +45,8 @@ public class TimeLineView extends View {
 
   private Uri mVideoUri;
   private int mHeightView;
-  private LongSparseArray<Bitmap> mBitmapList = null;
+  private int mWidthView;
+  private LongSparseArray<Pair<Integer, Bitmap>> mBitmapList = null;
 
   public TimeLineView(@NonNull Context context, AttributeSet attrs) {
     this(context, attrs, 0);
@@ -72,6 +77,7 @@ public class TimeLineView extends View {
     super.onSizeChanged(w, h, oldW, oldH);
 
     if (w != oldW) {
+      mWidthView = w;
       getBitmap(w);
     }
   }
@@ -81,13 +87,15 @@ public class TimeLineView extends View {
                                  @Override
                                  public void execute() {
                                    try {
-                                     LongSparseArray<Bitmap> thumbnailList = new LongSparseArray<>();
+                                     LongSparseArray<Pair<Integer, Bitmap>> thumbnailList = new LongSparseArray<>();
 
                                      MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                                      mediaMetadataRetriever.setDataSource(getContext(), mVideoUri);
 
                                      // Retrieve media data
-                                     long videoLengthInMs = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000;
+                                     Integer videoLengthInMillis = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+
+                                     long videoLengthInMs = videoLengthInMillis * 1000;
 
                                      // Set thumbnail properties (Thumbs are squares)
                                      final int thumbWidth = mHeightView;
@@ -105,7 +113,9 @@ public class TimeLineView extends View {
                                        } catch (Exception e) {
                                          e.printStackTrace();
                                        }
-                                       thumbnailList.put(i, bitmap);
+                                       Pair<Integer, Bitmap> pair = Pair.create(i * videoLengthInMillis / numThumbs, bitmap);
+
+                                       thumbnailList.put(i, pair);
                                      }
 
                                      mediaMetadataRetriever.release();
@@ -118,7 +128,7 @@ public class TimeLineView extends View {
     );
   }
 
-  private void returnBitmaps(final LongSparseArray<Bitmap> thumbnailList) {
+  private void returnBitmaps(final LongSparseArray<Pair<Integer, Bitmap>> thumbnailList) {
     UiThreadExecutor.runTask("", new Runnable() {
           @Override
           public void run() {
@@ -138,7 +148,7 @@ public class TimeLineView extends View {
       int x = 0;
 
       for (int i = 0; i < mBitmapList.size(); i++) {
-        Bitmap bitmap = mBitmapList.get(i);
+        Bitmap bitmap = mBitmapList.get(i).second;
 
         if (bitmap != null) {
           canvas.drawBitmap(bitmap, x, 0, null);
@@ -146,6 +156,21 @@ public class TimeLineView extends View {
         }
       }
     }
+  }
+
+  @Nullable
+  public Integer getThumbnailMillis(@NonNull Integer time) {
+    if (mBitmapList != null) {
+      Integer last = mBitmapList.get(0).first;
+      for (int i = 1; i < mBitmapList.size(); i++) {
+        if (time - mBitmapList.get(i).first < 0) {
+          last = mBitmapList.get(i - 1).first;
+          break;
+        }
+      }
+      return last;
+    }
+    return null;
   }
 
   public void setVideo(@NonNull Uri data) {

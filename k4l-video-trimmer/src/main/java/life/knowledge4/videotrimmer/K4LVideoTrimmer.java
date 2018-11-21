@@ -353,7 +353,8 @@ public class K4LVideoTrimmer extends FrameLayout {
     mVideoView.pause();
     mPlayView.setVisibility(View.VISIBLE);
 
-    mThumbnailPositionInMillis = (int) ((mDuration * seekBar.getProgress()) / 1000L);
+
+    mThumbnailPositionInMillis = mTimeLineView.getThumbnailMillis(mDuration * seekBar.getProgress() / 1000);
     mVideoView.seekTo(mThumbnailPositionInMillis);
     notifyProgressUpdate(false);
   }
