@@ -54,6 +54,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;
 import life.knowledge4.videotrimmer.interfaces.OnProgressVideoListener;
@@ -430,7 +431,7 @@ public class K4LVideoTrimmer extends FrameLayout {
     mTimeVideo = mEndPosition - mStartPosition;
   }
 
-  public Uri getBitmapUri() {
+  public String getBitmapString() {
     Bitmap thumbnail = mTimeLineView.getBitmapFromMillis(mThumbnailPositionInMillis);
     File outputDir = getContext().getCacheDir();
     Long timeStamp = LocalDateTime.now().toEpochSecond(org.threeten.bp.ZoneOffset.UTC);
@@ -438,7 +439,7 @@ public class K4LVideoTrimmer extends FrameLayout {
       File outputFile = File.createTempFile("IMG_" + timeStamp, ".jpg", outputDir);
       FileOutputStream out = new FileOutputStream(outputFile);
       thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, out);
-      return Uri.parse(outputFile.getPath());
+      return outputFile.getPath();
     } catch (IOException e1) {
       e1.printStackTrace();
     }
