@@ -1,13 +1,13 @@
 ext.versions = [
-        buildTools        : '26.0.2',
-        compileSdk        : 26,
+        buildTools        : '28.0.3',
+        compileSdk        : 28,
         espresso          : '2.2.2',
         exoplayer         : 'r2.5.4',
         isoparser         : '1.1.7',
         junit             : '4.12',
-        minSdk            : 17,
+        minSdk            : 21,
         publishVersion    : '1.0',
         publishVersionCode: 25,
-        supportLib        : '26.0.2',
+        supportLib        : '28.0.0',
         testRunner        : '0.5',
 ]

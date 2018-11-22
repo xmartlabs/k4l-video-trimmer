@@ -30,12 +30,12 @@ repositories{
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     //compile 'life.knowledge4:k4l-video-trimmer:0.1-SNAPSHOT'
-    compile project(':k4l-video-trimmer')
-    compile "com.android.support:appcompat-v7:${versions.supportLib}"
-    testCompile "junit:junit:${versions.junit}"
-    androidTestCompile "com.android.support.test.espresso:espresso-core:${versions.espresso}"
-    androidTestCompile "com.android.support.test:runner:${versions.testRunner}"
-    androidTestCompile "com.android.support:support-annotations:${versions.supportLib}"
+    implementation project(':k4l-video-trimmer')
+    implementation "com.android.support:appcompat-v7:${versions.supportLib}"
+    testImplementation "junit:junit:${versions.junit}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
+    androidTestImplementation "com.android.support.test:runner:${versions.testRunner}"
+    androidTestImplementation "com.android.support:support-annotations:${versions.supportLib}"
 }
