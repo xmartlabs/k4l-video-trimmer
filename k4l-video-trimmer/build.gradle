@@ -27,6 +27,7 @@ dependencies {
     androidTestImplementation "com.android.support:support-annotations:${versions.supportLib}"
     testImplementation "junit:junit:${versions.junit}"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
     implementation "com.android.support:appcompat-v7:${versions.supportLib}"
     implementation "com.googlecode.mp4parser:isoparser:${versions.isoparser}"
     implementation "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"

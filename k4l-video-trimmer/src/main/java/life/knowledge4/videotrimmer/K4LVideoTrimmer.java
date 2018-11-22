@@ -24,6 +24,7 @@
 package life.knowledge4.videotrimmer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -45,7 +46,11 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.VideoView;
 
+import org.threeten.bp.LocalDateTime;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -354,7 +359,7 @@ public class K4LVideoTrimmer extends FrameLayout {
     mPlayView.setVisibility(View.VISIBLE);
 
     mThumbnailPositionInMillis = mTimeLineView.getThumbnailMillis(mDuration * seekBar.getProgress() / 1000);
-    mVideoView.seekTo(mDuration * seekBar.getProgress() / 1000);
+    mVideoView.seekTo(mThumbnailPositionInMillis);
     notifyProgressUpdate(false);
   }
 
@@ -423,6 +428,22 @@ public class K4LVideoTrimmer extends FrameLayout {
     setProgressBarPosition(mStartPosition);
 
     mTimeVideo = mEndPosition - mStartPosition;
+  }
+
+  public Uri getBitmapUri() {
+    Bitmap thumbnail = mTimeLineView.getBitmapFromMillis(mThumbnailPositionInMillis);
+    File outputDir = getContext().getCacheDir();
+    Long timeStamp = LocalDateTime.now().toEpochSecond(org.threeten.bp.ZoneOffset.UTC);
+    try {
+      File outputFile = File.createTempFile("IMG_" + timeStamp, ".jpg", outputDir);
+      FileOutputStream out = new FileOutputStream(outputFile);
+      thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, out);
+      return Uri.parse(outputFile.getPath());
+    } catch (IOException e1) {
+      e1.printStackTrace();
+    }
+
+    return null;
   }
 
   private void onStopSeekThumbs() {
