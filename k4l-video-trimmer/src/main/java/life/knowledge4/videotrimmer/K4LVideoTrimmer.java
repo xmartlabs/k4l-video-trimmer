@@ -25,14 +25,17 @@ package life.knowledge4.videotrimmer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -78,6 +81,7 @@ public class K4LVideoTrimmer extends FrameLayout {
   private RelativeLayout mLinearVideo;
   private VideoView mVideoView;
   private ImageView mPlayView;
+  private ImageView mVideoThumbnailView;
   private TimeLineView mTimeLineView;
 
   private ProgressBarView mVideoProgressIndicator;
@@ -120,6 +124,7 @@ public class K4LVideoTrimmer extends FrameLayout {
     mVideoView = findViewById(R.id.video_loader);
     mPlayView = findViewById(R.id.icon_video_play);
     mTimeLineView = findViewById(R.id.timeLineView);
+    mVideoThumbnailView = findViewById(R.id.video_thumbnail);
 
     setUpListeners();
     setUpMargins();
@@ -305,9 +310,9 @@ public class K4LVideoTrimmer extends FrameLayout {
       mPlayView.setVisibility(View.VISIBLE);
       mMessageHandler.removeMessages(SHOW_PROGRESS);
       mVideoView.pause();
+      mVideoThumbnailView.setVisibility(VISIBLE);
     } else {
       mPlayView.setVisibility(View.GONE);
-
       if (mResetSeekBar) {
         mResetSeekBar = false;
         mVideoView.seekTo(mStartPosition);
@@ -315,6 +320,7 @@ public class K4LVideoTrimmer extends FrameLayout {
 
       mMessageHandler.sendEmptyMessage(SHOW_PROGRESS);
       mVideoView.start();
+      mVideoThumbnailView.setVisibility(INVISIBLE);
     }
   }
 
@@ -358,10 +364,19 @@ public class K4LVideoTrimmer extends FrameLayout {
     mMessageHandler.removeMessages(SHOW_PROGRESS);
     mVideoView.pause();
     mPlayView.setVisibility(View.VISIBLE);
+    mVideoThumbnailView.setVisibility(View.VISIBLE);
 
-    mThumbnailPositionInMillis = mTimeLineView.getThumbnailMillis(mDuration * seekBar.getProgress() / 1000);
+    setThumbnailInMillis(seekBar.getProgress());
     mVideoView.seekTo(mThumbnailPositionInMillis);
     notifyProgressUpdate(false);
+  }
+
+  private void setThumbnailInMillis(@NonNull int progress) {
+    mThumbnailPositionInMillis = mTimeLineView.getThumbnailMillis(mDuration * progress / 1000);
+    Bitmap thumbnail = mTimeLineView.getBitmapFromMillis(mThumbnailPositionInMillis);
+    if (thumbnail != null) {
+      mVideoThumbnailView.setImageBitmap(thumbnail);
+    }
   }
 
   private void onVideoPrepared(@NonNull MediaPlayer mp) {
@@ -495,6 +510,7 @@ public class K4LVideoTrimmer extends FrameLayout {
     if (mDuration > 0) {
       long pos = 1000L * position / mDuration;
       mHolderTopView.setProgress((int) pos);
+      setThumbnailInMillis(mHolderTopView.getProgress());
     }
   }
 
