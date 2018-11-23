@@ -307,7 +307,7 @@ public class K4LVideoTrimmer extends FrameLayout {
       mMessageHandler.removeMessages(SHOW_PROGRESS);
       mVideoView.pause();
       mVideoThumbnailView.setVisibility(VISIBLE);
-      mVideoView.setVisibility(View.INVISIBLE);
+      mVideoThumbnailView.bringToFront();
     } else {
       mPlayView.setVisibility(View.GONE);
       if (mResetSeekBar) {
@@ -316,10 +316,8 @@ public class K4LVideoTrimmer extends FrameLayout {
       }
 
       mMessageHandler.sendEmptyMessage(SHOW_PROGRESS);
-      mVideoView.setVisibility(View.VISIBLE);
-      mVideoView.start();
       mVideoThumbnailView.setVisibility(INVISIBLE);
-
+      mVideoView.start();
     }
   }
 
@@ -363,12 +361,12 @@ public class K4LVideoTrimmer extends FrameLayout {
     mMessageHandler.removeMessages(SHOW_PROGRESS);
     mVideoView.pause();
     mPlayView.setVisibility(View.VISIBLE);
-    mVideoThumbnailView.setVisibility(View.VISIBLE);
-    mVideoView.setVisibility(View.INVISIBLE);
 
     setThumbnailInMillis(seekBar.getProgress());
     mVideoView.seekTo(mThumbnailPositionInMillis);
     notifyProgressUpdate(false);
+    mVideoThumbnailView.setVisibility(View.VISIBLE);
+    mVideoThumbnailView.bringToFront();
   }
 
   private void setThumbnailInMillis(int progress) {
