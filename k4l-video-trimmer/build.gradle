@@ -22,12 +22,13 @@ android {
 }
 
 dependencies {
-    androidTestCompile "com.android.support.test.espresso:espresso-core:${versions.espresso}"
-    androidTestCompile "com.android.support.test:runner:${versions.testRunner}"
-    androidTestCompile "com.android.support:support-annotations:${versions.supportLib}"
-    testCompile "junit:junit:${versions.junit}"
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile "com.android.support:appcompat-v7:${versions.supportLib}"
-    compile "com.googlecode.mp4parser:isoparser:${versions.isoparser}"
-    compile "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
+    androidTestImplementation "com.android.support.test:runner:${versions.testRunner}"
+    androidTestImplementation "com.android.support:support-annotations:${versions.supportLib}"
+    testImplementation "junit:junit:${versions.junit}"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
+    implementation "com.android.support:appcompat-v7:${versions.supportLib}"
+    implementation "com.googlecode.mp4parser:isoparser:${versions.isoparser}"
+    implementation "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
 }
