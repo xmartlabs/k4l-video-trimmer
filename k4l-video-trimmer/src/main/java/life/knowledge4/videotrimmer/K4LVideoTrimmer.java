@@ -25,17 +25,14 @@ package life.knowledge4.videotrimmer;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -57,7 +54,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import life.knowledge4.videotrimmer.interfaces.OnK4LVideoListener;
 import life.knowledge4.videotrimmer.interfaces.OnProgressVideoListener;
@@ -371,8 +367,8 @@ public class K4LVideoTrimmer extends FrameLayout {
     notifyProgressUpdate(false);
   }
 
-  private void setThumbnailInMillis(@NonNull int progress) {
-    mThumbnailPositionInMillis = mTimeLineView.getThumbnailMillis(mDuration * progress / 1000);
+  private void setThumbnailInMillis(int progress) {
+    mThumbnailPositionInMillis = mDuration * progress / 1000;
     Bitmap thumbnail = mTimeLineView.getBitmapFromMillis(mThumbnailPositionInMillis);
     if (thumbnail != null) {
       mVideoThumbnailView.setImageBitmap(thumbnail);
@@ -446,7 +442,8 @@ public class K4LVideoTrimmer extends FrameLayout {
     mTimeVideo = mEndPosition - mStartPosition;
   }
 
-  public String getBitmapString() {
+  @Nullable
+  public String getBitmapPath() {
     Bitmap thumbnail = mTimeLineView.getBitmapFromMillis(mThumbnailPositionInMillis);
     File outputDir = getContext().getCacheDir();
     Long timeStamp = LocalDateTime.now().toEpochSecond(org.threeten.bp.ZoneOffset.UTC);
@@ -455,10 +452,9 @@ public class K4LVideoTrimmer extends FrameLayout {
       FileOutputStream out = new FileOutputStream(outputFile);
       thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, out);
       return outputFile.getPath();
-    } catch (IOException e1) {
-      e1.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-
     return null;
   }
 

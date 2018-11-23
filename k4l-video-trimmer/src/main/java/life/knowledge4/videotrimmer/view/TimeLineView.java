@@ -159,25 +159,10 @@ public class TimeLineView extends View {
     }
   }
 
-  @Nullable
-  public Integer getThumbnailMillis(@NonNull Integer time) {
-    if (mBitmapList != null) {
-      Integer last = mBitmapList.get(0).getTime();
-      for (int i = 1; i < mBitmapList.size(); i++) {
-        if (time - mBitmapList.get(i).getTime() >= 0) {
-          last = mBitmapList.get(i).getTime();
-        } else {
-          break;
-        }
-      }
-      return last;
-    }
-    return 0;
-  }
-
+  // Given a time in millis thus function returns the bitmap associated with the interval that time is in
   @Nullable
   public Bitmap getBitmapFromMillis(@NonNull Integer time) {
-    if (mBitmapList != null) {
+    if (mBitmapList != null && mBitmapList.size() > 0) {
       Bitmap thumbnail = mBitmapList.get(0).getThumbnailFullSize();
       for (int i = 1; i < mBitmapList.size(); i++) {
         if (time - mBitmapList.get(i).getTime() >= 0) {
