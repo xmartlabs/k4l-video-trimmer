@@ -36,7 +36,6 @@ public class ThumbnailData {
     this.thumbnailFullSize = thumbnailFullSize;
   }
 
-
   @NonNull
   public Integer getTime() {
     return time;
