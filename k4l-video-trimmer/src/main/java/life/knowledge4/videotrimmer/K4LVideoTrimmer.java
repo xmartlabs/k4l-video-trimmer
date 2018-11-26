@@ -447,15 +447,17 @@ public class K4LVideoTrimmer extends FrameLayout {
   @Nullable
   public String getBitmapPath() {
     Bitmap thumbnail = mTimeLineView.getBitmapFromMillis(mThumbnailPositionInMillis);
-    File outputDir = getContext().getCacheDir();
-    Long timeStamp = LocalDateTime.now().toEpochSecond(org.threeten.bp.ZoneOffset.UTC);
-    try {
-      File outputFile = File.createTempFile("IMG_" + timeStamp, ".jpg", outputDir);
-      FileOutputStream out = new FileOutputStream(outputFile);
-      thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, out);
-      return outputFile.getPath();
-    } catch (IOException e) {
-      e.printStackTrace();
+    if (thumbnail != null) {
+      File outputDir = getContext().getCacheDir();
+      Long timeStamp = LocalDateTime.now().toEpochSecond(org.threeten.bp.ZoneOffset.UTC);
+      try {
+        File outputFile = File.createTempFile("IMG_" + timeStamp, ".jpg", outputDir);
+        FileOutputStream out = new FileOutputStream(outputFile);
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        return outputFile.getPath();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
     return null;
   }
