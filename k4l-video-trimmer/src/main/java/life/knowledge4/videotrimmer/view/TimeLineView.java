@@ -31,6 +31,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.LongSparseArray;
 import android.util.Pair;
 import android.view.View;
@@ -122,6 +123,7 @@ public class TimeLineView extends View {
                                      mediaMetadataRetriever.release();
                                      returnBitmaps(thumbnailList);
                                    } catch (final Throwable e) {
+                                     Log.e("Timeline View Crash","Entered catch on execute");
                                      Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                                    }
                                  }
