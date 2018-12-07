@@ -80,7 +80,11 @@ public class TimeLineView extends View {
 
     if (w != oldW) {
       mWidthView = w;
-      getBitmap(w);
+      try {
+        getBitmap(w);
+      } catch (IllegalArgumentException e) {
+        e.printStackTrace();
+      }
     }
   }
 
