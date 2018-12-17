@@ -99,7 +99,7 @@ public class TimeLineView extends View {
                                      MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                                      File file = mVideoUri != null ? new File(mVideoUri.getPath()) : null;
                                      if (file != null && file.exists()) {
-                                       mediaMetadataRetriever.setDataSource(getContext(), mVideoUri);
+                                       mediaMetadataRetriever.setDataSource(mVideoUri.getPath());
 
                                        // Retrieve media data
                                        Integer videoLengthInMillis = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
