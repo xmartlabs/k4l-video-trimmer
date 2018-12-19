@@ -141,6 +141,8 @@ public class TrimVideoUtils {
       if (callback != null) {
         callback.getResult(Uri.parse(dst.toString()));
       }
+    } catch (IOException exception) {
+      Log.e(TAG, exception.getMessage(), exception);
     } finally {
       fc.close();
       fos.close();
