@@ -130,8 +130,7 @@ public class TimeLineView extends View {
                                        returnBitmaps(thumbnailList);
                                      }
                                    } catch (final Throwable e) {
-                                     Log.e("Timeline View Crash", "Entered catch on execute");
-                                     Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
+                                     Log.e("Timeline View Crash", e.getMessage(), e);
                                    }
                                  }
                                }
