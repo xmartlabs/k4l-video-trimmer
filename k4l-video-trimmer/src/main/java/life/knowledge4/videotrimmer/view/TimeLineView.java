@@ -99,35 +99,38 @@ public class TimeLineView extends View {
                                      mediaMetadataRetriever.setDataSource(getContext(), mVideoUri);
 
                                      // Retrieve media data
-                                     Integer videoLengthInMillis = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-                                     long videoLengthInMs = videoLengthInMillis * 1000;
+                                     String lengthMetadata = mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                                     if (lengthMetadata != null) {
+                                       Integer videoLengthInMillis = Integer.parseInt(lengthMetadata);
+                                       long videoLengthInMs = videoLengthInMillis * 1000;
 
-                                     // Set thumbnail properties (Thumbs are squares)
-                                     final int thumbWidth = mHeightView;
-                                     final int thumbHeight = mHeightView;
+                                       // Set thumbnail properties (Thumbs are squares)
+                                       final int thumbWidth = mHeightView;
+                                       final int thumbHeight = mHeightView;
 
-                                     int numThumbs = (int) Math.ceil(((float) viewWidth) / thumbWidth);
+                                       int numThumbs = (int) Math.ceil(((float) viewWidth) / thumbWidth);
 
-                                     final long interval = videoLengthInMs / numThumbs;
+                                       final long interval = videoLengthInMs / numThumbs;
 
-                                     for (int i = 0; i < numThumbs; ++i) {
-                                       Bitmap bitmapFullSize = mediaMetadataRetriever.getFrameAtTime(i * interval, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-                                       // TODO: bitmap might be null here, hence throwing NullPointerException. You were right
-                                       Bitmap bitmap = null;
-                                       try {
-                                         bitmap = Bitmap.createScaledBitmap(bitmapFullSize, thumbWidth, thumbHeight, false);
-                                       } catch (Exception e) {
-                                         e.printStackTrace();
+                                       for (int i = 0; i < numThumbs; ++i) {
+                                         Bitmap bitmapFullSize = mediaMetadataRetriever.getFrameAtTime(i * interval, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                                         // TODO: bitmap might be null here, hence throwing NullPointerException. You were right
+                                         Bitmap bitmap = null;
+                                         try {
+                                           bitmap = Bitmap.createScaledBitmap(bitmapFullSize, thumbWidth, thumbHeight, false);
+                                         } catch (Exception e) {
+                                           e.printStackTrace();
+                                         }
+                                         ThumbnailData thumbnailData = new ThumbnailData(bitmap, bitmapFullSize, i * videoLengthInMillis / numThumbs);
+
+                                         thumbnailList.put(i, thumbnailData);
                                        }
-                                       ThumbnailData thumbnailData = new ThumbnailData(bitmap, bitmapFullSize, i * videoLengthInMillis / numThumbs);
 
-                                       thumbnailList.put(i, thumbnailData);
+                                       mediaMetadataRetriever.release();
+                                       returnBitmaps(thumbnailList);
                                      }
-
-                                     mediaMetadataRetriever.release();
-                                     returnBitmaps(thumbnailList);
                                    } catch (final Throwable e) {
-                                     Log.e("Timeline View Crash","Entered catch on execute");
+                                     Log.e("Timeline View Crash", "Entered catch on execute");
                                      Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                                    }
                                  }
